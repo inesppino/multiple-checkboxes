@@ -6,12 +6,6 @@
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
-   <!--
-   The following is a common layout you would see in an email client.
-
-   When a user clicks a checkbox, holds Shift, and then clicks another checkbox a few rows down, all the checkboxes inbetween those two checkboxes should be checked.
-
-  -->
   <div class="inbox">
     <div class="item">
       <input type="checkbox">
@@ -52,6 +46,29 @@
   </div>
 
 <script>
+  const allCheckboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+  
+  let lastChecked;
+
+  function handleCheck(e) {
+    //check if they are holdin the shift key down
+    //and that they are checking it not unchecking
+    let inBetween = false; //flag variable para controlar cuando el item esta dentro de la selección
+    if(e.shiftKey && this.checked) {
+      //loop over every single checkbox
+      allCheckboxes.forEach(checkbox => {
+        if(checkbox === this || checkbox === lastChecked) {
+          inBetween = !inBetween;
+        }
+        if(inBetween) {
+          checkbox.checked = true;
+        }
+      });
+    }
+    lastChecked = this;
+  }
+
+  allCheckboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck))
 </script>
 </body>
 </html>
